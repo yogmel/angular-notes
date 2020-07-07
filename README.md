@@ -70,3 +70,76 @@ Complete and short version:
 ng generate component newcomponent
 ng g c newcomponent
 ```
+
+## Data Binding
+
+Properties created inside the class component can be referenced in `_.component.html`.
+
+**String interpolation**
+
+- [Showing components properties with interpolation](https://angular.io/guide/displaying-data#showing-component-properties-with-interpolation)
+
+`servers.component.ts`:
+```typescript
+export class ServersComponent {
+  serverName = "test";
+}
+```
+
+`servers.component.html`:
+```html
+<p>{{ serverName }}</p>
+```
+
+**Property binding**
+
+`servers.component.ts`:
+```typescript
+export class ServersComponent {
+  allowNewServer = false;
+}
+```
+
+`servers.component.html`:
+```html
+<button
+  [disabled]="!allowNewServer"
+>
+  Add Server
+</button>
+```
+
+**Event binding**
+
+`servers.component.ts`:
+```typescript
+export class ServersComponent {
+  // ...
+  onCreateServer() {
+    this.serverCreationStatus = "Server was created! Name is " + this.serverName;
+  }
+}
+```
+
+`servers.component.html`:
+```html
+<button
+    (click)="onCreateServer()"
+>
+  Add Server
+</button>
+
+<p>{{ serverCreationStatus }}</p>
+```
+
+**Two-way-databinding**
+
+`servers.component.html`:
+```html
+<input
+  type="text"
+  [(ngModel)]="serverName"
+>
+
+<p>{{ serverName }}</p>
+```
