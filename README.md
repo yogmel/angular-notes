@@ -143,3 +143,37 @@ export class ServersComponent {
 
 <p>{{ serverName }}</p>
 ```
+
+## Directives
+
+- [Attribute directives](https://angular.io/guide/attribute-directives)
+
+Directives are instructions in the DOM. There are custom and built-in directives.
+
+**Structure directives**
+They can add or remove elements.
+
+```html
+<p *ngIf="serverCreated">
+  Server was created, server name: {{ serverCreationStatus }}
+</p>
+
+<app-server *ngFor="let server of servers"></app-server>
+```
+
+**Attribute directives**
+Change the apperean or behavior of an element.
+
+```html
+<p 
+  [ngStyle]="{backgroundColor: getColor()}"
+  [ngClass]="{online: serverStatus === 'online'}"
+>
+  Server with ID 10 is {{ status }}
+</p>
+```
+
+In this example, both property values should receive a Javascript object. For `ngStyle`, the property is the style (it can be camel or snake case), and the value is the value of the style. It is important to know that expressions are allowed as well.
+
+For `ngClass`, the property is the name of the class to be added and the value is the condition.
+
