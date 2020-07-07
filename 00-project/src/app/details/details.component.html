@@ -1,0 +1,11 @@
+<button (click)="handleBtnClick()">Display details</button>
+
+<p *ngIf="showMessage">Secret password: book</p>
+
+<p
+  *ngFor="let clicks of clicksArr; let i = index"
+  [ngStyle]="{backgroundColor: i >= 5 ? 'blue' : 'transparent'}"
+  [ngClass]="{whiteColor: i >= 5}"
+>
+    {{ clicks }}
+</p>
