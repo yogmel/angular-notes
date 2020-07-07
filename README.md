@@ -42,19 +42,19 @@ newcomponent/
 Its primary configuration are located in the `_.component.ts` file. In there, there should be the [Component decorator](https://angular.io/api/core/Component).
 
 ```typescript
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
   selector: "app-newcomponent",
   templateUrl: "./newcomponent.component.html",
-  styleUrl: "./newcomponent.component.css",
+  styleUrls: ["./newcomponent.component.css"],
 })
-export class NewComponent implements OnInit {}
+export class NewComponent {}
 ```
 
 - `selector`: which custom html element will render this component. It can be class, attribute or any other valid selector.
 - `template` or `templateUrl`: required. What will this component renders. A string of the path should be passed on `templateUrl` or the html elements on `template`.
-- `styles` or `styleUrls`: what styles will this component has. A string of the path should be passed on `styleUrl` or the style rules on `styles`.
+- `styles` or `styleUrls`: what styles will this component has. An array of strings of the paths should be passed on `styleUrls` or the style rules on `styles`.
 
 The other files:
 
