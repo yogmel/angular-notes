@@ -177,3 +177,83 @@ In this example, both property values should receive a Javascript object. For `n
 
 For `ngClass`, the property is the name of the class to be added and the value is the condition.
 
+## Data binding between components
+
+- Project: [01-databinding](./01-databinding)
+
+There is a possibility to pass values between parent and child (nested) components.
+
+**Passing values down to a child element**
+
+- [Input decorator](https://angular.io/api/core/Input);
+
+For example, if a `app-server-element` (child) is nested in `app.component` (parent), to pass info from parent to child:
+
+`app.component.html`
+```html
+<app-server-element
+  *ngFor="let serverElement of serverElements"
+  [srvElement]="serverElement"
+></app-server-element>
+```
+
+`[srvElement]="serverElement"` passes the `serverElement` object to the `app-server-element`.
+
+In order to receive the value, the metadata file of the component must declare a `@Input` decorator. The string parameter inside `@Input()` is optional and refers to the alias of the element.
+
+`server-element.component.ts`
+```ts
+import { Component, Input } from '@angular/core';
+
+export class ServerElementComponent implements OnInit {
+  @Input('srvElement') element: {type: string, name: string, content: string};
+  // ...
+}
+```
+
+**Passing values up to a parent element**
+
+- [Output](https://angular.io/api/core/Output)
+- [EventEmitter](https://angular.io/api/core/EventEmitter)
+
+For example, if a `app-cockpit` (child) is nested in `app.component` (parent), and an event will be triggered in the child and pass information to its parent:
+
+`app.component.html`
+```html
+<app-cockpit
+  (serverCreated)="onServerAdded($event)"
+></app-cockpit>
+```
+
+`app.component.ts`
+```typescript
+export class AppComponent {
+  serverElements = [];
+
+  onServerAdded(serverData: {serverName: string, serverContent: string}) {
+    this.serverElements.push({
+      type: 'server',
+      name: serverData.serverName,
+      content: serverData.serverContent
+    });
+  }
+}
+```
+
+
+`cockpit.component.ts`
+```typescript
+export class CockpitComponent implements OnInit {
+  @Output() serverCreated = new EventEmitter<{
+    serverName: string;
+    serverContent: string;
+  }>();
+
+  newServerName = "";
+  newServerContent = "";
+
+  onAddServer() {
+    this.serverCreated.emit({serverName: this.newServerName, serverContent: this.newServerContent});
+  }
+}
+```
