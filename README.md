@@ -181,7 +181,7 @@ For `ngClass`, the property is the name of the class to be added and the value i
 
 - Project: [01-databinding](./01-databinding)
 
-There is a possibility to pass values between parent and child (nested) components.
+By default, properties inside a component are not shared between other ones. But, there is a way to pass values between parent and child (nested) components.
 
 **Passing values down to a child element**
 
@@ -256,4 +256,21 @@ export class CockpitComponent implements OnInit {
     this.serverCreated.emit({serverName: this.newServerName, serverContent: this.newServerContent});
   }
 }
+```
+
+## View Encapsulation
+
+- [Encapsulation](https://angular.io/api/core/Component#encapsulation)
+
+Angular has a feature similar to the **Shadow DOM**. While using it, we are sure that the element's style will not clash with other nodes of the DOM.
+
+By default, `ViewEncapsulation` is set to `emulated`, which means Angular is encapsulating the components, but not using Shadow DOM, which is not supported by every browser.
+
+To change its configuration, the `@Component()` decorator has to be changed:
+
+```typescript
+@Component({
+  // ...
+  encapsulation: ViewEncapsulation.None // it can be Emulated, None and ShadowDom
+})
 ```
