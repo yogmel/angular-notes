@@ -2,6 +2,11 @@
   <div class="col-md-10">
     <app-shopping-list-edit></app-shopping-list-edit>
     <hr>
-    <p>The list</p>
+    
+    <div class="card" *ngFor="let ingredient of ingredients">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ ingredient.amount }} {{ ingredient.name }}</li>
+      </ul>
+    </div>
   </div>
 </div>
