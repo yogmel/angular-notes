@@ -283,9 +283,63 @@ To change its configuration, the `@Component()` decorator has to be changed:
 
 ## Local References
 
+- [Template reference variables](https://angular.io/guide/template-syntax#template-reference-variables-var)
+
+You can reference an element and a directive, for example, within a template. To do that, you need to add a reference to that target element, as `#var`.
+
+`cockpit.component.html`
+```html
+<input type="text" class="form-control" #serverContentInput>
+<button (click)="onAddServer(serverNameInput)">Add Server</button>
+```
+
+In this example, the `input` element has a reference of `serverContentInput`. This is passed as a parameter in the callback in the button click event.
+
 ## ViewChild()
 
+-[ViewChild](https://angular.io/api/core/ViewChild);
+
+It is a decorator that watches a specific query - if the view DOM is changed and a new child matches the selector, the property is updated.
+
+Anatomy: `@ViewChild(selector, { static: true } )`. `static` defines the time of the query resolution, which can be before (`true`) or after (`false`, default) change detection run.
+
+We can specify that what it receives is a `ElementRef`, an Angular type.
+
+`cockpit.component.html`
+```html
+<input type="text" class="form-control" #serverContentInput>
+```
+
+`cockpit.component.ts`
+```typescript
+import { ViewChild, ElementRef, Component } from "@angular/core";
+
+export class CockpitComponent {
+  @ViewChild('serverContentInput', { static: true }) serverContentInput: ElementRef;
+  // ...
+}
+```
+
 ## ng-content directive
+
+Instead of using the same content in components, you can pass content between opening and closing tags of a component. This can be used calling `<ng-content></ng-content>` placeholder.
+
+`app.component.html`
+```html
+<app-server-element *ngFor="let serverElement of serverElements" [srvElement]="serverElement">
+  <p>
+    <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
+    <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
+  </p>
+</app-server-element>
+```
+
+`server-element.component.html`
+```html
+<div class="panel-body">
+  <ng-content></ng-content>
+</div>
+```
 
 ## Lifecycle hooks
 
