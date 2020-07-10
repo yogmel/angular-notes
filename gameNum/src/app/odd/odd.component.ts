@@ -11,7 +11,6 @@ export class OddComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // console.log('alokaa', this.counterNum);
   }
 
 }

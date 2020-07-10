@@ -227,6 +227,8 @@ For example, if a `app-cockpit` (child) is nested in `app.component` (parent), a
 <app-cockpit (serverCreated)="onServerAdded($event)"></app-cockpit>
 ```
 
+Note: the parameter has to be `$event` to get the data back from the child component.
+
 `app.component.ts`
 
 ```typescript
