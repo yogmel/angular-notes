@@ -80,6 +80,7 @@ Properties created inside the class component can be referenced in `_.component.
 - [Showing components properties with interpolation](https://angular.io/guide/displaying-data#showing-component-properties-with-interpolation)
 
 `servers.component.ts`:
+
 ```typescript
 export class ServersComponent {
   serverName = "test";
@@ -87,6 +88,7 @@ export class ServersComponent {
 ```
 
 `servers.component.html`:
+
 ```html
 <p>{{ serverName }}</p>
 ```
@@ -94,6 +96,7 @@ export class ServersComponent {
 **Property binding**
 
 `servers.component.ts`:
+
 ```typescript
 export class ServersComponent {
   allowNewServer = false;
@@ -101,10 +104,9 @@ export class ServersComponent {
 ```
 
 `servers.component.html`:
+
 ```html
-<button
-  [disabled]="!allowNewServer"
->
+<button [disabled]="!allowNewServer">
   Add Server
 </button>
 ```
@@ -112,20 +114,21 @@ export class ServersComponent {
 **Event binding**
 
 `servers.component.ts`:
+
 ```typescript
 export class ServersComponent {
   // ...
   onCreateServer() {
-    this.serverCreationStatus = "Server was created! Name is " + this.serverName;
+    this.serverCreationStatus =
+      "Server was created! Name is " + this.serverName;
   }
 }
 ```
 
 `servers.component.html`:
+
 ```html
-<button
-    (click)="onCreateServer()"
->
+<button (click)="onCreateServer()">
   Add Server
 </button>
 
@@ -135,11 +138,9 @@ export class ServersComponent {
 **Two-way-databinding**
 
 `servers.component.html`:
+
 ```html
-<input
-  type="text"
-  [(ngModel)]="serverName"
->
+<input type="text" [(ngModel)]="serverName" />
 
 <p>{{ serverName }}</p>
 ```
@@ -165,7 +166,7 @@ They can add or remove elements.
 Change the apperean or behavior of an element.
 
 ```html
-<p 
+<p
   [ngStyle]="{backgroundColor: getColor()}"
   [ngClass]="{online: serverStatus === 'online'}"
 >
@@ -190,6 +191,7 @@ By default, properties inside a component are not shared between other ones. But
 For example, if a `app-server-element` (child) is nested in `app.component` (parent), to pass info from parent to child:
 
 `app.component.html`
+
 ```html
 <app-server-element
   *ngFor="let serverElement of serverElements"
@@ -202,11 +204,12 @@ For example, if a `app-server-element` (child) is nested in `app.component` (par
 In order to receive the value, the metadata file of the component must declare a `@Input` decorator. The string parameter inside `@Input()` is optional and refers to the alias of the element.
 
 `server-element.component.ts`
+
 ```ts
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
 export class ServerElementComponent implements OnInit {
-  @Input('srvElement') element: {type: string, name: string, content: string};
+  @Input("srvElement") element: { type: string; name: string; content: string };
   // ...
 }
 ```
@@ -219,29 +222,29 @@ export class ServerElementComponent implements OnInit {
 For example, if a `app-cockpit` (child) is nested in `app.component` (parent), and an event will be triggered in the child and pass information to its parent:
 
 `app.component.html`
+
 ```html
-<app-cockpit
-  (serverCreated)="onServerAdded($event)"
-></app-cockpit>
+<app-cockpit (serverCreated)="onServerAdded($event)"></app-cockpit>
 ```
 
 `app.component.ts`
+
 ```typescript
 export class AppComponent {
   serverElements = [];
 
-  onServerAdded(serverData: {serverName: string, serverContent: string}) {
+  onServerAdded(serverData: { serverName: string; serverContent: string }) {
     this.serverElements.push({
-      type: 'server',
+      type: "server",
       name: serverData.serverName,
-      content: serverData.serverContent
+      content: serverData.serverContent,
     });
   }
 }
 ```
 
-
 `cockpit.component.ts`
+
 ```typescript
 export class CockpitComponent implements OnInit {
   @Output() serverCreated = new EventEmitter<{
@@ -253,7 +256,10 @@ export class CockpitComponent implements OnInit {
   newServerContent = "";
 
   onAddServer() {
-    this.serverCreated.emit({serverName: this.newServerName, serverContent: this.newServerContent});
+    this.serverCreated.emit({
+      serverName: this.newServerName,
+      serverContent: this.newServerContent,
+    });
   }
 }
 ```
@@ -274,3 +280,22 @@ To change its configuration, the `@Component()` decorator has to be changed:
   encapsulation: ViewEncapsulation.None // it can be Emulated, None and ShadowDom
 })
 ```
+
+## Local References
+
+## ViewChild()
+
+## ng-content directive
+
+## Lifecycle hooks
+
+| Method                | When it's called                                        |
+| --------------------- | ------------------------------------------------------- |
+| ngOnChanges           | after input property changes                            |
+| ngOnInit              | once, when initialized                                  |
+| ngDoCheck             | during every change detection                           |
+| ngAfterContentInit    | after content (ng-content) has been projected into view |
+| ngAfterContentChecked | every time projected content has been checked           |
+| ngAfterViewInit       | after component and child views initialized             |
+| ngAfterViewChecked    | every time view and child view have been checked        |
+| ngOnDestroy           | right before the component is destroyed                 |
