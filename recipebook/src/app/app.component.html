@@ -1,7 +1,7 @@
-<app-header></app-header>
+<app-header (currentView)="onChangeView($event)"></app-header>
 
 <div class="container mt-5">
-  <app-recipes></app-recipes>
-  <hr> 
-  <app-shopping-list></app-shopping-list>
+  <app-recipes *ngIf="currView === 'recipes'"></app-recipes>
+  <hr>
+  <app-shopping-list *ngIf="currView === 'shopping-list'"></app-shopping-list>
 </div>
