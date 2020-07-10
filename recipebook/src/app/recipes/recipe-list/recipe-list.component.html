@@ -5,11 +5,9 @@
 <div class="row">
 
   <div *ngFor="let recipe of recipes" class="card">
-    <img src="{{ recipe.imagePath }}"  class="card-img-top img-fluid" alt="{{ recipe.name }}">
-    <div class="card-body">
-      <h5 class="card-title">{{ recipe.name }}</h5>
-      <p class="card-text">{{ recipe.description }}</p>
-      <a href="#" class="btn btn-primary">See details</a>
-    </div>
+    <app-recipe-item
+      [recipe]="recipe"
+      (recipeDetail)="sendRecipeDetails(recipe)"
+    ></app-recipe-item>
   </div>
 </div>

@@ -1,9 +1,9 @@
 <div class="row">
-  <img src=""  class="img-fluid" alt="">
+  <img [src]="recipe.imagePath"  class="img-fluid" [alt]="recipe.name">
 </div>
 
 <div class="row">
-  <h1>Recipe name</h1>
+  <h1>{{ recipe.name }}</h1>
 </div>
 
 <div class="row">
@@ -21,7 +21,7 @@
 
 <div class="row">
   <p>
-    Description
+    {{ recipe.description }}
   </p>
 </div>
 

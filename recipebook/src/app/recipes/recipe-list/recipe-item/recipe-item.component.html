@@ -1,1 +1,6 @@
-<p>recipe-item works!</p>
+<img src="{{ recipe.imagePath }}" class="card-img-top img-fluid" alt="{{ recipe.name }}">
+<div class="card-body">
+  <h5 class="card-title">{{ recipe.name }}</h5>
+  <p class="card-text">{{ recipe.description }}</p>
+  <a href="#" class="btn btn-primary" (click)="handleLoadRecipeDetail()">See details</a>
+</div>
