@@ -1,0 +1,7 @@
+<app-game-control
+  (counterNow)="handleCounterChange($event)"
+></app-game-control>
+<div *ngFor="let counter of counters">
+  <app-odd *ngIf="counter % 2 !== 0" [counterNum]="counter"></app-odd>
+  <app-even *ngIf="counter % 2 === 0" [counterNum]="counter"></app-even>
+</div>
