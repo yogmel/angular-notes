@@ -295,11 +295,11 @@ You can reference an element and a directive, for example, within a template. To
 
 In this example, the `input` element has a reference of `serverContentInput`. This is passed as a parameter in the callback in the button click event.
 
-## ViewChild()
+## ViewChild() and ContentChild()
 
--[ViewChild](https://angular.io/api/core/ViewChild);
+- [ViewChild](https://angular.io/api/core/ViewChild);
 
-It is a decorator that watches a specific query - if the view DOM is changed and a new child matches the selector, the property is updated.
+`ViewChild` is a decorator that watches a specific query - if the view DOM is changed and a new child matches the selector, the property is updated.
 
 Anatomy: `@ViewChild(selector, { static: true } )`. `static` defines the time of the query resolution, which can be before (`true`) or after (`false`, default) change detection run.
 
@@ -320,14 +320,16 @@ export class CockpitComponent {
 }
 ```
 
-## ng-content directive
+## ng-content directive and ContentChild()
+
+- [ContentChild](https://angular.io/api/core/ContentChild#description);
 
 Instead of using the same content in components, you can pass content between opening and closing tags of a component. This can be used calling `<ng-content></ng-content>` placeholder.
 
 `app.component.html`
 ```html
 <app-server-element *ngFor="let serverElement of serverElements" [srvElement]="serverElement">
-  <p>
+  <p #contentParagraph>
     <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
     <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
   </p>
@@ -340,6 +342,10 @@ Instead of using the same content in components, you can pass content between op
   <ng-content></ng-content>
 </div>
 ```
+
+Accessing the `#contentParagraph` local reference will not work, because it is not part of the `server-element` view.
+
+Instead of referencing via `ViewChild`, `ContentChild` has to be used. It is set on the `ngAfterContentInit()` lifecycle hook. 
 
 ## Lifecycle hooks
 
