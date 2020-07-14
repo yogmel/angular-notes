@@ -160,10 +160,16 @@ They can add or remove elements.
 </p>
 
 <app-server *ngFor="let server of servers"></app-server>
+
+<div [ngSwitch]="value">
+  <p *ngSwitchCase="5">Value is 5</p>
+  <p *ngSwitchCase="10">Value is 10</p>
+  <p *ngSwitchDefault>Value is default</p>
+</div>
 ```
 
 **Attribute directives**
-Change the apperean or behavior of an element.
+Change the appearance or behavior of an element.
 
 ```html
 <p
@@ -177,6 +183,106 @@ Change the apperean or behavior of an element.
 In this example, both property values should receive a Javascript object. For `ngStyle`, the property is the style (it can be camel or snake case), and the value is the value of the style. It is important to know that expressions are allowed as well.
 
 For `ngClass`, the property is the name of the class to be added and the value is the condition.
+
+** Custom Directives**
+
+- [@Directive](https://angular.io/api/core/Directive)
+
+The filename anatomy should be `name-of-directive.directive.ts`, and there should be a `@Directive` decorator.
+
+```ts
+import { Directive, ElementRef } from "@angular/core";
+
+@Directive({
+  selector: "[appBasicHighlight]",
+})
+export class BasicHighlightDirective {
+  constructor(private elementReference: ElementRef) {}
+}
+```
+
+In the `app.module.ts`, there should be an import of the directive as well.
+
+Some notes:
+
+- It is not recommended to change DOM properties directly in the directive, as there can be a rendering issue. The best practice is to use `Renderer2`. It should be used on any DOM manipulation.
+
+- [Renderer2](https://angular.io/api/core/Renderer2);
+
+```ts
+import { Directive, OnInit, ElementRef, Renderer2 } from "@angular/core";
+
+@Directive({
+  selector: "[appBetterHighlight]",
+})
+export class BetterHighlightDirective implements OnInit {
+  constructor(private elRef: ElementRef, private renderer: Renderer2) {}
+
+  ngOnInit() {
+    this.renderer.setStyle(
+      this.elRef.nativeElement,
+      "background-color",
+      "blue"
+    );
+  }
+}
+```
+
+- There is a way to create an event listener using the `@HostListener` decorator. And to bind a DOM property to the element, use the `@HostBinding`.
+
+- [@HostListener](https://angular.io/api/core/HostListener);
+- [@HostBinding](https://angular.io/api/core/HostBinding);
+
+```ts
+import {
+  // ...
+  HostBinding,
+  HostListener,
+} from "@angular/core";
+
+export class CustomDirective {
+  @HostBinding("style.backgroundColor") backgroundColor: string = "transparent";
+
+  // ...
+
+  @HostListener("click") onClick(eventData: Event) {
+    // ...
+  }
+}
+```
+
+- To create structural directives, there are a couple of elements that can be used: `TemplateRef` to refer to the content in the DOM and `ViewContainerRef` to use its manipulation methods.
+
+- [TemplateRef](https://angular.io/api/core/TemplateRef);
+- [ViewContainerRef](https://angular.io/api/core/ViewContainerRef);
+
+```ts
+import { Directive, Input, TemplateRef, ViewContainerRef } from "@angular/core";
+
+@Directive({
+  selector: "[appUnless]",
+})
+export class UnlessDirective {
+  @Input() set appUnless(condition: boolean) {
+    if (!condition) {
+      this.vcRef.createEmbeddedView(this.templateRef);
+    } else {
+      this.vcRef.clear();
+    }
+  }
+
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private vcRef: ViewContainerRef
+  ) {}
+}
+```
+
+```html
+<div *appUnless="onlyOdd">
+  <li *ngFor="let even of evenNumbers">{{ even }}</li>
+</div>
+```
 
 ## Data binding between components
 
