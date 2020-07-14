@@ -290,8 +290,9 @@ To change its configuration, the `@Component()` decorator has to be changed:
 You can reference an element and a directive, for example, within a template. To do that, you need to add a reference to that target element, as `#var`.
 
 `cockpit.component.html`
+
 ```html
-<input type="text" class="form-control" #serverContentInput>
+<input type="text" class="form-control" #serverContentInput />
 <button (click)="onAddServer(serverNameInput)">Add Server</button>
 ```
 
@@ -308,16 +309,19 @@ Anatomy: `@ViewChild(selector, { static: true } )`. `static` defines the time of
 We can specify that what it receives is a `ElementRef`, an Angular type.
 
 `cockpit.component.html`
+
 ```html
-<input type="text" class="form-control" #serverContentInput>
+<input type="text" class="form-control" #serverContentInput />
 ```
 
 `cockpit.component.ts`
+
 ```typescript
 import { ViewChild, ElementRef, Component } from "@angular/core";
 
 export class CockpitComponent {
-  @ViewChild('serverContentInput', { static: true }) serverContentInput: ElementRef;
+  @ViewChild("serverContentInput", { static: true })
+  serverContentInput: ElementRef;
   // ...
 }
 ```
@@ -329,16 +333,23 @@ export class CockpitComponent {
 Instead of using the same content in components, you can pass content between opening and closing tags of a component. This can be used calling `<ng-content></ng-content>` placeholder.
 
 `app.component.html`
+
 ```html
-<app-server-element *ngFor="let serverElement of serverElements" [srvElement]="serverElement">
+<app-server-element
+  *ngFor="let serverElement of serverElements"
+  [srvElement]="serverElement"
+>
   <p #contentParagraph>
-    <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
+    <strong *ngIf="element.type === 'server'" style="color: red"
+      >{{ element.content }}</strong
+    >
     <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
   </p>
 </app-server-element>
 ```
 
 `server-element.component.html`
+
 ```html
 <div class="panel-body">
   <ng-content></ng-content>
@@ -347,7 +358,7 @@ Instead of using the same content in components, you can pass content between op
 
 Accessing the `#contentParagraph` local reference will not work, because it is not part of the `server-element` view.
 
-Instead of referencing via `ViewChild`, `ContentChild` has to be used. It is set on the `ngAfterContentInit()` lifecycle hook. 
+Instead of referencing via `ViewChild`, `ContentChild` has to be used. It is set on the `ngAfterContentInit()` lifecycle hook.
 
 ## Lifecycle hooks
 
