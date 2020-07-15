@@ -25,7 +25,9 @@ ng serve --open
 
 ## Component
 
-Components are the basic part of Angular anatomy project. Usually, each folder contains the files of this component.
+Components are the basic part of Angular anatomy project - they present the layout.
+
+Usually, each folder contains the files of this component.
 
 `app.component` is the main component and it contains the `app.module.ts`.
 
@@ -478,3 +480,83 @@ Instead of referencing via `ViewChild`, `ContentChild` has to be used. It is set
 | ngAfterViewInit       | after component and child views initialized             |
 | ngAfterViewChecked    | every time view and child view have been checked        |
 | ngOnDestroy           | right before the component is destroyed                 |
+
+## Services
+
+- [Injectable](https://angular.io/api/core/Injectable);
+- [Singleton services](https://angular.io/guide/singleton-services);
+
+Services are classes that are used to save or fetch data, and can be used across components. They can be injected in the component, which can be used by its child components, or it can be injected in the `app.component.ts`, which makes this service available across all components.
+
+`example.service.ts`
+```ts
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class ExampleService {}
+```
+
+If you want this service to be available **across all components**:
+
+`app.module.ts`
+```ts
+import { ExampleService } from './services';
+
+@NgModule({
+  providers: [ExampleService]
+})
+```
+
+`app.component.ts`
+```ts
+@Component({
+  // ...
+  providers: [AccountsService]
+})
+export class AppComponent implements OnInit {
+  constructor(private accountServices: AccountsService){}
+}
+```
+
+To **use the service in a component**, import the service, add to the `providers` array in the `@Component` decorator and initializes it into the `constructor()`:
+
+`component-example.component.ts`
+```ts
+import { ExampleService } from './services';
+
+@Component({
+  // ...
+  providers: [ExampleService] // this will need to be added in case the service is not in the app.module.ts
+})
+export class ExampleComponent {
+  constructor(private exampleService: ExampleService) {}
+}
+```
+
+It is important to know that if the service is providing data that you want to be accessible by other components, you should instanciate in the `app.component.ts` or in a parent component. If there are multiple instances, then the data would not be shared.
+
+**Services in Angular 6+**
+
+There is a way of adding a service class globally in the app, instead of adding it into the `providers[]` array, a parameter can be passed in `@Injectable()`:
+
+`example.service.ts`
+```ts
+import { Injectable } from '@angular/core';
+
+@Injectable({providedIn: 'root'})
+export class ExampleService {}
+```
+
+Although the other methods are still supported, this way allows the service to be lazy loaded, to increase performance.
+
+**Injecting services into services**
+
+`another.service.ts`
+```ts
+import { ExampleService } from './example.service';
+
+@Injectable()
+export class AnotherService {
+  constructor(private exampleService: ExampleService) {}
+}
+```
